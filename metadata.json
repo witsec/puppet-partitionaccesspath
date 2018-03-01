@@ -1,6 +1,6 @@
 {
   "name": "witsec-partitionaccesspath",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "witsec",
   "summary": "This module creates a partition and mounts it to an accesspath on Windows.",
   "license": "Apache-2.0",
@@ -10,6 +10,13 @@
   "dependencies": [
     {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
   ],
-  "data_provider": null
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "windows",
+      "operatingsystemrelease": [
+        "Server 2012 R2",
+		"Server 2016"
+      ]
+    }
+  ]
 }
-
