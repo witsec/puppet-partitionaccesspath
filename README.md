@@ -19,9 +19,9 @@ This module creates a partition and mounts it to an accesspath on Windows.
 
 ## Module Description
 
-This module introduces a small define `partitionaccesspath`. It shrinks an
-existing partition and then creates a new (raw) partition, which gets mounted
-to an accesspath. It is only supported on Windows.
+This module introduces a small defined type `partitionaccesspath`. It shrinks
+an existing partition and then creates a new (raw or formatted) partition,
+which gets mounted to an accesspath. It is only supported on Windows.
 
 
 
