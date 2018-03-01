@@ -1,0 +1,41 @@
+$driveletter = "<%= @driveletter -%>"
+$size        = <%= @size -%> # Don't put this in quotes!
+$accesspath  = "<%= @accesspath -%>"
+$filesystem  = "<%= @filesystem -%>"
+
+
+# Stop script on any error
+$ErrorActionPreference = "Stop"
+
+
+# Remove accesspath if it exists (check.ps1 has checked if this path is valid, apparently it isn't, because create.ps1 is called)
+If (Test-Path $accesspath) {
+  Remove-Item -Recurse -Force $accesspath
+}
+
+
+# Create directory (mounting the partition to this will change this into a link later on)
+New-Item $accesspath -type directory
+
+
+# Shrink the $driveletter partition
+Resize-Partition -DriveLetter $driveletter -Size ((Get-Partition -DriveLetter $driveletter).Size - $size) > $null
+
+
+# Get disknumber of $driveletter
+$disknumber = (Get-Partition -DriveLetter $driveletter).DiskNumber
+
+
+# Create new partition (and retrieve the partitionnumber)
+$partitionnumber = (New-Partition -DiskNumber $disknumber -Size $size).PartitionNumber
+
+# Format partition if needed
+If ($filesystem.ToLower() -ne "raw") {
+  Get-Partition -DiskNumber $disknumber -PartitionNumber $partitionnumber | Format-Volume -FileSystem $filesystem -Confirm:$false
+}
+
+# Mount partition to $accesspath
+Add-PartitionAccessPath -DiskNumber $disknumber -PartitionNumber $partitionnumber -AccessPath $accesspath > $null
+
+
+exit 0

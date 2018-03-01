@@ -1,0 +1,16 @@
+$driveletter = "<%= @driveletter -%>"
+$size        = <%= @size -%> # Don't put this in quotes!
+$accesspath  = "<%= @accesspath -%>"
+
+
+# Stop script on any error
+$ErrorActionPreference = "Stop"
+
+
+# Check if $accesspath exists and if it's a mount point
+If (!(Get-WmiObject Win32_Volume | select Name | findstr /I /M $accesspath)) {
+  Write-Host "The requested accesspath ($accesspath) does not exist."
+  exit 1
+}
+
+exit 0
